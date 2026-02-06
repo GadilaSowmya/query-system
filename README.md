@@ -269,5 +269,10 @@ This project is for educational purposes.
 - React Router for seamless navigation
 
 ---
+## 🔗 Live Demo:  
 
+View Project
+https://query-management-system-sage.vercel.app/
+
+---
 **Built with ❤️ for efficient query management**
