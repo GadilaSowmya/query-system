@@ -7,10 +7,20 @@ A full-stack web application for managing user queries with admin oversight. Bui
 ## 📁 Project Structure
 
 ```
-Query Management System/
-├── frontend/          # React + TypeScript + TailwindCSS
-├── query-system/      # Java Spring Boot API
-├── start.bat          # Startup script
+Query_Management_System/
+├── frontend/ # React + TypeScript + Tailwind CSS (Vite)
+│ ├── src/
+│ ├── public/
+│ ├── package.json
+│ └── vite.config.ts
+│
+├── QuerySystem/ # Spring Boot backend
+│ ├── src/main/java/
+│ ├── src/main/resources/
+│ │ ├── application.properties.template
+│ └── pom.xml
+│
+├── start.bat # Starts frontend + backend together
 ├── .gitignore
 └── README.md
 ```
