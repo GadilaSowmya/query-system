@@ -268,56 +268,55 @@ const AdminDashboardPage: React.FC = () => {
                         </div>
                     </div>
                 </div>
-        </div>
-            </main >
+            </main>
 
-    {/* REPLY MODAL */ }
-{
-    replyModalOpen && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
-            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transform transition-all scale-100">
-                <div className="bg-gradient-to-r from-primary to-primary-dark p-4 flex justify-between items-center text-white">
-                    <h3 className="font-heading font-bold text-lg flex items-center gap-2">
-                        <Send size={18} /> Send Reply
-                    </h3>
-                    <button onClick={() => setReplyModalOpen(false)} className="hover:bg-white/20 p-1 rounded-full transition-colors">
-                        <X size={20} />
-                    </button>
-                </div>
+            {/* REPLY MODAL */}
+            {
+                replyModalOpen && (
+                    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
+                        <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transform transition-all scale-100">
+                            <div className="bg-gradient-to-r from-primary to-primary-dark p-4 flex justify-between items-center text-white">
+                                <h3 className="font-heading font-bold text-lg flex items-center gap-2">
+                                    <Send size={18} /> Send Reply
+                                </h3>
+                                <button onClick={() => setReplyModalOpen(false)} className="hover:bg-white/20 p-1 rounded-full transition-colors">
+                                    <X size={20} />
+                                </button>
+                            </div>
 
-                <div className="p-6">
-                    <p className="text-sm text-text-muted mb-3 font-medium">
-                        Replying to Query ID: <span className="font-bold text-text-main">{selectedQueryId}</span>
-                    </p>
+                            <div className="p-6">
+                                <p className="text-sm text-text-muted mb-3 font-medium">
+                                    Replying to Query ID: <span className="font-bold text-text-main">{selectedQueryId}</span>
+                                </p>
 
-                    <textarea
-                        className="w-full h-32 p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none resize-none text-text-main text-sm"
-                        placeholder="Type your reply here..."
-                        value={replyText}
-                        onChange={(e) => setReplyText(e.target.value)}
-                    ></textarea>
+                                <textarea
+                                    className="w-full h-32 p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none resize-none text-text-main text-sm"
+                                    placeholder="Type your reply here..."
+                                    value={replyText}
+                                    onChange={(e) => setReplyText(e.target.value)}
+                                ></textarea>
 
-                    <div className="flex justify-end gap-3 mt-6">
-                        <button
-                            onClick={() => setReplyModalOpen(false)}
-                            className="px-4 py-2 text-sm font-semibold text-text-muted hover:bg-slate-100 rounded-lg transition-colors"
-                        >
-                            Cancel
-                        </button>
-                        <button
-                            onClick={submitReply}
-                            disabled={!replyText.trim()}
-                            className="px-6 py-2 text-sm font-bold text-white bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-lg shadow-md hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-                        >
-                            Send Reply
-                        </button>
+                                <div className="flex justify-end gap-3 mt-6">
+                                    <button
+                                        onClick={() => setReplyModalOpen(false)}
+                                        className="px-4 py-2 text-sm font-semibold text-text-muted hover:bg-slate-100 rounded-lg transition-colors"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        onClick={submitReply}
+                                        disabled={!replyText.trim()}
+                                        className="px-6 py-2 text-sm font-bold text-white bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-lg shadow-md hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                                    >
+                                        Send Reply
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                )
+            }
         </div>
-    )
-}
-        </div >
     );
 };
 
