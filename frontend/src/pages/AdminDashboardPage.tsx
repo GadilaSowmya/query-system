@@ -179,6 +179,7 @@ const AdminDashboardPage: React.FC = () => {
                                         <th className="py-4 px-5 font-heading font-bold text-sm tracking-wide text-primary-dark uppercase w-[80px]">ID</th>
                                         <th className="py-4 px-5 font-heading font-bold text-sm tracking-wide text-primary-dark uppercase w-[220px]">User</th>
                                         <th className="py-4 px-5 font-heading font-bold text-sm tracking-wide text-primary-dark uppercase">Issue Description</th>
+                                        <th className="py-4 px-5 font-heading font-bold text-sm tracking-wide text-primary-dark uppercase w-[100px]">Priority</th>
                                         <th className="py-4 px-5 font-heading font-bold text-sm tracking-wide text-primary-dark uppercase w-[120px]">Status</th>
                                         <th className="py-4 px-5 font-heading font-bold text-sm tracking-wide text-primary-dark uppercase w-[140px]">Action</th>
                                     </tr>
@@ -193,7 +194,15 @@ const AdminDashboardPage: React.FC = () => {
                                                 </td>
                                                 <td className="py-3 px-5 font-medium text-text-main leading-relaxed max-w-[350px] text-sm">{q.originalQuery}</td>
                                                 <td className="py-3 px-5">
-                                                    <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide shadow-sm border ${q.status === 'RESOLVED' ? 'bg-green-50 text-green-700 border-green-200' : 'bg-orange-50 text-orange-700 border-orange-200'}`}>
+                                                    <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide shadow-sm border ${q.priority === 'HIGH' ? 'bg-red-50 text-red-700 border-red-200' :
+                                                            q.priority === 'MEDIUM' ? 'bg-orange-50 text-orange-700 border-orange-200' :
+                                                                'bg-slate-50 text-slate-600 border-slate-200'
+                                                        }`}>
+                                                        {q.priority || 'LOW'}
+                                                    </span>
+                                                </td>
+                                                <td className="py-3 px-5">
+                                                    <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide shadow-sm border ${q.status === 'RESOLVED' ? 'bg-green-50 text-green-700 border-green-200' : 'bg-blue-50 text-blue-700 border-blue-200'}`}>
                                                         {q.status}
                                                     </span>
                                                 </td>

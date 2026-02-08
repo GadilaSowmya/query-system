@@ -33,8 +33,12 @@ public class QueryService {
         query.setQueryId(queryId);
         query.setUserId(payload.get("userId"));
         query.setCategory(payload.get("category"));
-        query.setPriority(payload.get("priority"));
-        query.setOriginalQuery(payload.get("queryText"));
+
+        // Auto-detect priority
+        String text = payload.get("queryText");
+        query.setPriority(determinePriority(text));
+
+        query.setOriginalQuery(text);
         query.setStatus("NEW");
         query.setAnswered(false);
         query.setRead(false);
@@ -47,8 +51,29 @@ public class QueryService {
 
         return Map.of(
                 "message", "Query submitted successfully",
-                "queryId", queryId
-        );
+                "queryId", queryId);
+    }
+
+    // 🔹 Helper to determine priority
+    private String determinePriority(String text) {
+        if (text == null)
+            return "LOW";
+        String lower = text.toLowerCase();
+
+        if (lower.contains("urgent") || lower.contains("critical") ||
+                lower.contains("crash") || lower.contains("immediate") ||
+                lower.contains("server down") || lower.contains("hacked")) {
+            return "HIGH";
+        }
+
+        if (lower.contains("bug") || lower.contains("error") ||
+                lower.contains("issue") || lower.contains("fail") ||
+                lower.contains("wrong") || lower.contains("glitch") ||
+                lower.contains("not working")) {
+            return "MEDIUM";
+        }
+
+        return "LOW";
     }
 
     // ===============================
