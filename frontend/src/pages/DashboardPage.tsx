@@ -205,6 +205,7 @@ const DashboardPage: React.FC = () => {
                                             <th className="bg-secondary-light/50 p-5 font-heading font-bold text-sm tracking-wide text-primary-dark uppercase">Query ID</th>
                                             <th className="bg-secondary-light/50 p-5 font-heading font-bold text-sm tracking-wide text-primary-dark uppercase">Description</th>
                                             <th className="bg-secondary-light/50 p-5 font-heading font-bold text-sm tracking-wide text-primary-dark uppercase">Current Status</th>
+                                            <th className="bg-secondary-light/50 p-5 font-heading font-bold text-sm tracking-wide text-primary-dark uppercase">Admin Reply</th>
                                             <th className="bg-secondary-light/50 p-5 font-heading font-bold text-sm tracking-wide text-primary-dark uppercase">Submission Date</th>
                                         </tr>
                                     </thead>
@@ -217,6 +218,13 @@ const DashboardPage: React.FC = () => {
                                                     <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide shadow-sm border ${q.status === 'RESOLVED' ? 'bg-green-50 text-green-700 border-green-200' : 'bg-orange-50 text-orange-700 border-orange-200'}`}>
                                                         {q.status}
                                                     </span>
+                                                </td>
+                                                <td className="p-5 font-medium text-text-muted max-w-[300px] truncate">
+                                                    {q.adminReply ? (
+                                                        <span className="text-text-main">{q.adminReply}</span>
+                                                    ) : (
+                                                        <span className="italic text-slate-400">Waiting for reply...</span>
+                                                    )}
                                                 </td>
                                                 <td className="p-5 text-text-muted font-medium">{new Date(q.createdAt).toLocaleDateString()}</td>
                                             </tr>
