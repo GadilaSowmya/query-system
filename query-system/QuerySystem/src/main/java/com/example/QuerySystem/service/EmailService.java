@@ -16,10 +16,10 @@ import java.io.IOException;
 @Service
 public class EmailService {
 
-    @Value("${spring.sendgrid.api-key}")
+    @Value("${SENDGRID_API_KEY}")
     private String sendGridApiKey;
 
-    @Value("${app.email.from}")
+    @Value("${EMAIL_FROM:central.querysystem@gmail.com}")
     private String fromEmail;
 
     // 🔹 Central admin email
