@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
-import { LogOut, CheckCircle, LayoutGrid, FileDown } from 'lucide-react';
+import { LogOut, CheckCircle, LayoutGrid, FileDown, X, Send } from 'lucide-react';
 
 
 const AdminDashboardPage: React.FC = () => {
@@ -9,6 +9,11 @@ const AdminDashboardPage: React.FC = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [itemsPerPage] = useState(8);
     const [currentPage, setCurrentPage] = useState(1);
+
+    // Modal State
+    const [replyModalOpen, setReplyModalOpen] = useState(false);
+    const [selectedQueryId, setSelectedQueryId] = useState<string | null>(null);
+    const [replyText, setReplyText] = useState('');
 
     const navigate = useNavigate();
     const token = localStorage.getItem('admin_token');
@@ -33,8 +38,14 @@ const AdminDashboardPage: React.FC = () => {
         }
     };
 
-    const updateStatus = async (queryId: string, newStatus: string) => {
-        if (!token) return;
+    const openReplyModal = (queryId: string) => {
+        setSelectedQueryId(queryId);
+        setReplyText('');
+        setReplyModalOpen(true);
+    };
+
+    const submitReply = async () => {
+        if (!token || !selectedQueryId) return;
         try {
             const response = await fetch(API_BASE_URL + '/api/admin/reply', {
                 method: 'POST',
@@ -43,16 +54,17 @@ const AdminDashboardPage: React.FC = () => {
                     'X-ADMIN-ID': token
                 },
                 body: JSON.stringify({
-                    queryId: queryId,
-                    reply: `Status updated to: ${newStatus}`
+                    queryId: selectedQueryId,
+                    reply: replyText
                 })
             });
             const data = await response.text();
             if (data.includes('successfully')) {
+                setReplyModalOpen(false);
                 fetchQueries();
             }
         } catch (err) {
-            alert('Failed to update status');
+            alert('Failed to send reply');
         }
     };
 
@@ -195,8 +207,8 @@ const AdminDashboardPage: React.FC = () => {
                                                 <td className="py-3 px-5 font-medium text-text-main leading-relaxed max-w-[350px] text-sm">{q.originalQuery}</td>
                                                 <td className="py-3 px-5">
                                                     <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide shadow-sm border ${q.priority === 'HIGH' ? 'bg-red-50 text-red-700 border-red-200' :
-                                                            q.priority === 'MEDIUM' ? 'bg-orange-50 text-orange-700 border-orange-200' :
-                                                                'bg-slate-50 text-slate-600 border-slate-200'
+                                                        q.priority === 'MEDIUM' ? 'bg-orange-50 text-orange-700 border-orange-200' :
+                                                            'bg-slate-50 text-slate-600 border-slate-200'
                                                         }`}>
                                                         {q.priority || 'LOW'}
                                                     </span>
@@ -210,7 +222,7 @@ const AdminDashboardPage: React.FC = () => {
                                                     {q.status !== 'RESOLVED' && (
                                                         <button
                                                             className="flex items-center gap-1.5 bg-emerald-100 text-emerald-700 hover:bg-emerald-200 px-3 py-1.5 rounded-lg text-[11px] font-bold transition-all shadow-sm hover:-translate-y-0.5"
-                                                            onClick={() => updateStatus(q.queryId, 'RESOLVED')}
+                                                            onClick={() => openReplyModal(q.queryId)}
                                                         >
                                                             <CheckCircle size={13} /> Resolve
                                                         </button>
@@ -256,7 +268,55 @@ const AdminDashboardPage: React.FC = () => {
                         </div>
                     </div>
                 </div>
+        </div>
             </main >
+
+    {/* REPLY MODAL */ }
+{
+    replyModalOpen && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
+            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transform transition-all scale-100">
+                <div className="bg-gradient-to-r from-primary to-primary-dark p-4 flex justify-between items-center text-white">
+                    <h3 className="font-heading font-bold text-lg flex items-center gap-2">
+                        <Send size={18} /> Send Reply
+                    </h3>
+                    <button onClick={() => setReplyModalOpen(false)} className="hover:bg-white/20 p-1 rounded-full transition-colors">
+                        <X size={20} />
+                    </button>
+                </div>
+
+                <div className="p-6">
+                    <p className="text-sm text-text-muted mb-3 font-medium">
+                        Replying to Query ID: <span className="font-bold text-text-main">{selectedQueryId}</span>
+                    </p>
+
+                    <textarea
+                        className="w-full h-32 p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none resize-none text-text-main text-sm"
+                        placeholder="Type your reply here..."
+                        value={replyText}
+                        onChange={(e) => setReplyText(e.target.value)}
+                    ></textarea>
+
+                    <div className="flex justify-end gap-3 mt-6">
+                        <button
+                            onClick={() => setReplyModalOpen(false)}
+                            className="px-4 py-2 text-sm font-semibold text-text-muted hover:bg-slate-100 rounded-lg transition-colors"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            onClick={submitReply}
+                            disabled={!replyText.trim()}
+                            className="px-6 py-2 text-sm font-bold text-white bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-lg shadow-md hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                        >
+                            Send Reply
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
         </div >
     );
 };
