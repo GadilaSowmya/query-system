@@ -68,6 +68,30 @@ const AdminDashboardPage: React.FC = () => {
         }
     };
 
+    const directResolve = async () => {
+        if (!token || !selectedQueryId) return;
+        try {
+            const response = await fetch(API_BASE_URL + '/api/admin/reply', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-ADMIN-ID': token
+                },
+                body: JSON.stringify({
+                    queryId: selectedQueryId,
+                    reply: "Your query has been resolved by the administrator. Thank you for your patience."
+                })
+            });
+            const data = await response.text();
+            if (data.includes('successfully')) {
+                setReplyModalOpen(false);
+                fetchQueries();
+            }
+        } catch (err) {
+            alert('Failed to resolve query');
+        }
+    };
+
     const handleLogout = () => {
         localStorage.removeItem('admin_token');
         localStorage.removeItem('admin_user');
@@ -302,6 +326,12 @@ const AdminDashboardPage: React.FC = () => {
                                         className="px-4 py-2 text-sm font-semibold text-text-muted hover:bg-slate-100 rounded-lg transition-colors"
                                     >
                                         Cancel
+                                    </button>
+                                    <button
+                                        onClick={directResolve}
+                                        className="px-4 py-2 text-sm font-bold text-amber-600 bg-amber-50 border border-amber-200 rounded-lg shadow-sm hover:bg-amber-100 transition-all"
+                                    >
+                                        Quick Resolve ⚡
                                     </button>
                                     <button
                                         onClick={submitReply}
