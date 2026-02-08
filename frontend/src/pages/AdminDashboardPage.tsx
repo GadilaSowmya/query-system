@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
-import { LogOut, CheckCircle, LayoutGrid } from 'lucide-react';
+import { LogOut, CheckCircle, LayoutGrid, FileDown } from 'lucide-react';
 
 
 const AdminDashboardPage: React.FC = () => {
@@ -139,9 +139,36 @@ const AdminDashboardPage: React.FC = () => {
                         <h2 className="font-heading text-2xl md:text-[2.2rem] font-extrabold text-text-main tracking-tight">
                             Hello, Admin 🛡️
                         </h2>
-                        <span className="bg-white/80 backdrop-blur-md px-5 py-2 rounded-full text-sm font-bold text-text-main shadow-sm border border-white/60 self-start md:self-auto">
+                        <span className="font-heading text-lg font-bold text-text-muted">
                             {queries.length} Total Queries
                         </span>
+                        <button
+                            onClick={async () => {
+                                if (!token) return;
+                                try {
+                                    const response = await fetch(API_BASE_URL + '/api/admin/download/excel', {
+                                        headers: { 'X-ADMIN-ID': token }
+                                    });
+                                    if (!response.ok) throw new Error('Download failed');
+
+                                    const blob = await response.blob();
+                                    const url = window.URL.createObjectURL(blob);
+                                    const a = document.createElement('a');
+                                    a.href = url;
+                                    a.download = `queries_report_${new Date().toISOString().split('T')[0]}.xlsx`;
+                                    document.body.appendChild(a);
+                                    a.click();
+                                    window.URL.revokeObjectURL(url);
+                                    document.body.removeChild(a);
+                                } catch (err) {
+                                    console.error('Download error:', err);
+                                    alert('Failed to download report');
+                                }
+                            }}
+                            className="flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-5 py-2 rounded-full text-sm font-bold shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all"
+                        >
+                            <FileDown size={18} /> Download Report
+                        </button>
                     </div>
 
                     <div className="w-full flex-1 overflow-hidden rounded-2xl border border-white/60 shadow-sm bg-white/50 backdrop-blur-md flex flex-col relative">
@@ -220,8 +247,8 @@ const AdminDashboardPage: React.FC = () => {
                         </div>
                     </div>
                 </div>
-            </main>
-        </div>
+            </main >
+        </div >
     );
 };
 
