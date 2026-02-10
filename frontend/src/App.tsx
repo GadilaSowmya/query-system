@@ -9,6 +9,8 @@ import DashboardPage from './pages/DashboardPage';
 import AdminLoginPage from './pages/AdminLoginPage';
 import AdminOTPPage from './pages/AdminOTPPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
+import { Analytics } from '@vercel/analytics/react';
+
 
 
 const App: React.FC = () => {
@@ -28,7 +30,9 @@ const App: React.FC = () => {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>
+      <Analytics />
     </AuthProvider>
+
   );
 };
 
