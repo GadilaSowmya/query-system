@@ -17,7 +17,7 @@ const AdminDashboardPage: React.FC = () => {
 
     const navigate = useNavigate();
     const token = localStorage.getItem('admin_token');
-    const adminEmail = localStorage.getItem('admin_email') || 'admin@example.com';
+    // const adminEmail = localStorage.getItem('admin_email') || 'admin@example.com';
     const adminDisplayName = 'Admin';
 
     useEffect(() => {

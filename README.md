@@ -1,263 +1,115 @@
-# Query Management System
+# Query Management System (QMS) 🚀
 
-A full-stack web application for managing user queries with admin oversight. Built with React, TypeScript, Java Spring Boot, and MySQL.
+A premium, full-stack query management solution designed for seamless user-admin interaction. Built with a modern architecture featuring **Java Spring Boot**, **React**, and **MySQL**.
 
 ---
 
 ## 📁 Project Structure
 
 ```
-Query Management System/
-├── frontend/          # React + TypeScript + TailwindCSS
-├── query-system/      # Java Spring Boot API
-├── start.bat          # Startup script
-├── .gitignore
+Query-Management-System/
+├── frontend/          # Vite + React (TypeScript) + TailwindCSS
+├── query-system/      # Java Spring Boot API (Maven)
+├── vercel.json        # Vercel deployment configuration
+├── start.bat          # Local startup script
 └── README.md
 ```
 
 ---
 
-## ✨ Features
+## ✨ Key Features
 
-### **User Features**
-- 🔐 Dual OTP Authentication (Email + Mobile)
-- 📝 Submit and track queries
-- 👤 User profile management
-- 📊 Personal query history dashboard
-- 🔔 Real-time status updates
+### **🧠 Smart Query Priority**
+- **Auto-Detection:** Automatically categorizes queries as **HIGH**, **MEDIUM**, or **LOW** based on keyword analysis (e.g., "urgent", "crash", "bug").
+- **Visual Badges:** Color-coded priority levels in the admin dashboard for immediate attention.
 
-### **Admin Features**
-- 🛡️ Secure admin authentication (bcrypt hashed passwords)
-- 📋 View all user queries
-- ✅ Update query statuses (Pending → In Progress → Resolved)
-- 📄 Paginated query table (8 items per page)
-- 📱 Responsive admin dashboard
+### **🛡️ Admin Dashboard (Power Tools)**
+- **Custom Replies:** Send personalized text responses to user queries via a sleek modal.
+- **Quick Resolve ⚡:** Resolve queries instantly with a single click using pre-defined professional templates.
+- **Excel Reports 📊:** Download comprehensive query reports in `.xlsx` format for offline analysis.
+- **Query Management:** Advanced pagination, real-time status tracking, and glassmorphism UI.
 
-### **Design**
-- 🎨 Premium Tailwind CSS styling
-- 🌈 Glassmorphism effects and gradient accents
-- 📱 Fully responsive (mobile + desktop)
-- ⚡ Smooth animations and hover effects
+### **👤 User Experience**
+- **Secure Auth:** OTP-based login (Email) for robust verification.
+- **Personal Dashboard:** Track query status (NEW → RESOLVED) and view admin replies in real-time.
+- **Profile Management:** Complete user profile tracking including educational background and contact details.
 
----
-
-## 🚀 Getting Started
-
-### **Prerequisites**
-- Node.js (v18+)
-- Java (v17+)
-- MySQL (v8.0+)
-- npm or yarn
-- Maven
-
-### **1. Database Setup**
-
-1. Open MySQL Workbench or command line
-2. Create a database named `querysystem`:
-   ```sql
-   CREATE DATABASE querysystem;
-   ```
-3. The Java backend will automatically create tables using JPA/Hibernate
-
-### **2. Configure Backend**
-
-1.  Navigate to `query-system/QuerySystem/src/main/resources/`
-2.  Rename `application.properties.template` to `application.properties`
-3.  Open `application.properties` and update the `CHANGE_ME` placeholders with your actual credentials:
-    ```properties
-    spring.datasource.username=your_mysql_username
-    spring.datasource.password=your_mysql_password
-    spring.mail.username=your_gmail_address
-    spring.mail.password=your_app_password
-    ```
-
-### **3. Run Backend**
-
-```bash
-cd query-system\QuerySystem
-
-
-Start the server:
-```bash
-mvnw spring-boot:run
-```
-
-The API will run on **http://localhost:8080**
-
-### **3. Frontend Setup**
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-The app will run on **http://localhost:5173**
-
-### **Quick Start**
-
-Simply run the startup script:
-```bash
-start.bat
-```
-This will automatically start both the Java backend and React frontend.
-
----
-
-## 🔐 Admin Access
-
-1. Navigate to: **http://localhost:5173/admin/signup**
-2. Register your first admin account
-3. Log in at: **http://localhost:5173/admin/login**
-
----
-
-## 📡 API Endpoints
-
-### **Authentication**
-- `POST /api/auth/signup` - User registration
-- `POST /api/auth/login` - User login (sends OTP)
-- `POST /api/auth/verify-otp` - Verify dual OTP
-- `POST /api/auth/resend-otp` - Resend OTPs
-
-### **User Queries**
-- `POST /api/query/submit` - Submit a new query (protected)
-- `GET /api/query/my-queries` - Get user's queries (protected)
-- `GET /api/user/profile` - Get user profile (protected)
-
-### **Admin**
-- `POST /api/admin/signup` - Admin registration
-- `POST /api/admin/login` - Admin login
-- `GET /api/admin/queries` - Get all queries
-- `PUT /api/admin/query/:id/status` - Update query status
+### **📧 Automated Notifications**
+- **SendGrid Integration:** Powered by SendGrid API for reliable email delivery of OTPs, query notifications, and admin replies.
 
 ---
 
 ## 🛠️ Tech Stack
 
 ### **Frontend**
-- React 18
-- TypeScript
-- Tailwind CSS
-- React Router
-- Lucide Icons
-- Vite
+- **Framework:** React 18 + Vite
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS (Custom Design System)
+- **Icons:** Lucide-react
+- **Deployment:** Vercel
 
 ### **Backend**
-- Java 25
-- Spring Boot 4.0.2
-- Spring Data JPA
-- MySQL
-- JavaMailSender
-- Lombok
-- Apache POI (Excel export)
-
-### **Database**
-- MySQL
+- **Framework:** Spring Boot 3.3.x (Java 17+)
+- **Security:** JWT + Bcrypt
+- **Email:** SendGrid Java SDK
+- **Data:** Spring Data JPA + MySQL
+- **Tooling:** Apache POI (Excel Generation)
+- **Deployment:** Render (Dockerized)
 
 ---
 
-## 📝 Environment Variables
+## 🚀 Getting Started
 
-The application is configured using `src/main/resources/application.properties`.
-Use the provided `application.properties.template` as a starting point.
+### **Local Setup**
 
+#### **1. Database**
+1. Create a MySQL database named `querysystem`.
+2. Tables are auto-generated via JPA on first run.
 
----
+#### **2. Backend Configuration**
+Create `query-system/QuerySystem/src/main/resources/application.properties`:
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/querysystem
+spring.datasource.username=YOUR_USERNAME
+spring.datasource.password=YOUR_PASSWORD
 
-## 🎯 Usage Flow
-
-1. **User Signup**: Enter details → Receive OTP via email → Verify → Login
-2. **Submit Query**: Authenticated users can submit queries from the dashboard
-3. **Admin Review**: Admin logs in → Views all queries → Replies to queries
-4. **User Tracking**: Users see updated status in their dashboard
-
-Note: The system now uses single OTP verification (email-based) instead of dual OTP.
-
----
-
-## 🛡️ Security Features
-
-- 🔐 JWT-based authentication
-- 🔒 Bcrypt password hashing
-- ⏱️ OTP expiry (60 seconds)
-- 🚫 Protected API routes
-- 🔑 Secure admin authentication
-
----
-
-## 📂 Database Schema
-
-### **users**
-- `id`, `full_name`, `age`, `gender`, `qualification`, `college_name`, `location`, `mobile_number`, `email`, `status`, `created_at`
-
-### **queries**
-- `id`, `user_id`, `query_text`, `query_id`, `status`, `created_at`
-
-
-
-### **admins**
-- `id`, `full_name`, `email`, `password`, `created_at`
-
----
-
-## 📸 Screenshots
-
-### User Authentication
-- Single OTP verification via email
-
-### Admin Dashboard
-- Query management with reply functionality
-- Excel export capability
-
----
-
-## 👨‍💻 Development
-
-### Run Backend in Dev Mode
-```bash
-cd query-system\QuerySystem
-mvnw spring-boot:run
+# SendGrid Direct Injection
+SENDGRID_API_KEY=YOUR_KEY
+EMAIL_FROM=YOUR_VERIFIED_SENDER
 ```
 
-
-### Build Frontend for Production
+#### **3. Run Application**
+Use the provided batch script for one-click startup:
 ```bash
-cd frontend
-npm run build
+./start.bat
 ```
 
 ---
 
-## 🐛 Troubleshooting
+## 🔐 Environment Variables
 
-### MySQL Connection Error
-- Verify `.env` credentials
-- Ensure MySQL is running
-- Check database name matches
+### **Backend (Render/Local)**
+- `SPRING_DATASOURCE_URL`: Database connection string.
+- `SENDGRID_API_KEY`: Your SendGrid API secret.
+- `EMAIL_FROM`: Your verified SendGrid sender email.
 
-### OTP Not Received (Simulation)
-- OTPs are logged to the backend console
-- Check terminal output for development testing
+### **Frontend (Vercel/Local)**
+- `VITE_API_BASE_URL`: URL of the deployed backend (e.g., `https://your-api.onrender.com`).
 
-### Port Already in Use
-- Change `PORT` in `.env`
-- Kill existing processes on port 5000 or 5173
+---
+
+## 📸 Deployment Highlights
+
+- **Frontend:** Deployed on **Vercel** with SPA routing support.
+- **Backend:** Hosted on **Render** (Docker container).
+- **Database:** Managed MySQL instance on **Aiven**.
 
 ---
 
 ## 📄 License
-
-This project is for educational purposes.
-
----
-
-## 🙏 Acknowledgments
-
-- Tailwind CSS for the styling framework
-- Lucide Icons for beautiful iconography
-- React Router for seamless navigation
+This project is open-source and available under the MIT License.
 
 ---
 
-**Built with ❤️ for efficient query management**
+**Built with ❤️ for efficient query management.**
+
