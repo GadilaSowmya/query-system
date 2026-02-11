@@ -33,6 +33,7 @@ Query-Management-System/
 - **Secure Auth:** OTP-based login (Email) for robust verification.
 - **Personal Dashboard:** Track query status (NEW → RESOLVED) and view admin replies in real-time.
 - **Profile Management:** Complete user profile tracking including educational background and contact details.
+- **Structured Address Input:** Detailed address capture with separate fields for Street/Area, City, State (dropdown), PIN Code (6-digit validation), and Country.
 
 ### **📧 Automated Notifications**
 - **SendGrid Integration:** Powered by SendGrid API for reliable email delivery of OTPs, query notifications, and admin replies.
@@ -65,6 +66,7 @@ Query-Management-System/
 #### **1. Database**
 1. Create a MySQL database named `querysystem`.
 2. Tables are auto-generated via JPA on first run.
+3. **User Schema includes:** Name, Age, Gender, Qualification, College, Address (Street/Area, City, State, PIN Code, Country), Mobile, Email.
 
 #### **2. Backend Configuration**
 Create `query-system/QuerySystem/src/main/resources/application.properties`:
