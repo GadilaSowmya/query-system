@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMentor } from '../context/MentorContext';
 import { API_BASE_URL } from '../config';
@@ -7,17 +7,15 @@ import { LogOut, User, Mail, Phone, MapPin, Briefcase, Award, Clock } from 'luci
 const MentorDashboardPage: React.FC = () => {
     const { mentor, logout, updateMentor } = useMentor();
     const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState(false);
 
     // Fetch fresh mentor data from backend on component load
-    useEffect(() => {
+    React.useEffect(() => {
         if (!mentor?.email) {
             navigate('/mentor/login');
             return;
         }
 
         const fetchMentorProfile = async () => {
-            setIsLoading(true);
             try {
                 // Try to fetch from profile endpoint
                 const response = await fetch(API_BASE_URL + '/api/mentor/auth/profile', {
@@ -37,7 +35,11 @@ const MentorDashboardPage: React.FC = () => {
                         age: mentorObj.age !== undefined ? mentorObj.age : mentor.age,
                         gender: mentorObj.gender || mentor.gender,
                         phone: mentorObj.phone || mentor.phone,
-                        location: mentorObj.location || mentor.location,
+                        addressLine: mentorObj.addressLine || mentor.addressLine,
+                        city: mentorObj.city || mentor.city,
+                        state: mentorObj.state || mentor.state,
+                        pinCode: mentorObj.pinCode || mentor.pinCode,
+                        country: mentorObj.country || mentor.country,
                         organization: mentorObj.organization || mentor.organization,
                         designation: mentorObj.designation || mentor.designation,
                         experience: mentorObj.experience !== undefined ? mentorObj.experience : mentor.experience,
@@ -45,8 +47,6 @@ const MentorDashboardPage: React.FC = () => {
                 }
             } catch (err) {
                 console.log('Profile fetch completed with fallback data');
-            } finally {
-                setIsLoading(false);
             }
         };
 
@@ -119,7 +119,9 @@ const MentorDashboardPage: React.FC = () => {
                                     <MapPin size={20} className="text-green-600 flex-shrink-0" />
                                     <div>
                                         <p className="text-xs text-gray-600">Location</p>
-                                        <p className="text-sm font-medium text-gray-800">{mentor.location}</p>
+                                        <p className="text-sm font-medium text-gray-800">
+                                            {mentor.city}, {mentor.state} {mentor.pinCode}
+                                        </p>
                                     </div>
                                 </div>
                             </div>

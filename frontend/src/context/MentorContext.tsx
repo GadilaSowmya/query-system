@@ -7,7 +7,11 @@ export interface Mentor {
   gender: string;
   email: string;
   phone: string;
-  location: string;
+  addressLine: string;
+  city: string;
+  state: string;
+  pinCode: string;
+  country: string;
   organization: string;
   designation: string;
   experience: number;

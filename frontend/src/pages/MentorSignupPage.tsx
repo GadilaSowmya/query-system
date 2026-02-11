@@ -1,6 +1,46 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
+import SearchableSelect from '../components/SearchableSelect';
+
+const INDIAN_STATES = [
+    { value: 'Andhra Pradesh', label: 'Andhra Pradesh' },
+    { value: 'Arunachal Pradesh', label: 'Arunachal Pradesh' },
+    { value: 'Assam', label: 'Assam' },
+    { value: 'Bihar', label: 'Bihar' },
+    { value: 'Chhattisgarh', label: 'Chhattisgarh' },
+    { value: 'Goa', label: 'Goa' },
+    { value: 'Gujarat', label: 'Gujarat' },
+    { value: 'Haryana', label: 'Haryana' },
+    { value: 'Himachal Pradesh', label: 'Himachal Pradesh' },
+    { value: 'Jharkhand', label: 'Jharkhand' },
+    { value: 'Karnataka', label: 'Karnataka' },
+    { value: 'Kerala', label: 'Kerala' },
+    { value: 'Madhya Pradesh', label: 'Madhya Pradesh' },
+    { value: 'Maharashtra', label: 'Maharashtra' },
+    { value: 'Manipur', label: 'Manipur' },
+    { value: 'Meghalaya', label: 'Meghalaya' },
+    { value: 'Mizoram', label: 'Mizoram' },
+    { value: 'Nagaland', label: 'Nagaland' },
+    { value: 'Odisha', label: 'Odisha' },
+    { value: 'Punjab', label: 'Punjab' },
+    { value: 'Rajasthan', label: 'Rajasthan' },
+    { value: 'Sikkim', label: 'Sikkim' },
+    { value: 'Tamil Nadu', label: 'Tamil Nadu' },
+    { value: 'Telangana', label: 'Telangana' },
+    { value: 'Tripura', label: 'Tripura' },
+    { value: 'Uttar Pradesh', label: 'Uttar Pradesh' },
+    { value: 'Uttarakhand', label: 'Uttarakhand' },
+    { value: 'West Bengal', label: 'West Bengal' },
+    { value: 'Andaman and Nicobar Islands', label: 'Andaman and Nicobar Islands' },
+    { value: 'Chandigarh', label: 'Chandigarh' },
+    { value: 'Dadra and Nagar Haveli and Daman and Diu', label: 'Dadra and Nagar Haveli and Daman and Diu' },
+    { value: 'Delhi', label: 'Delhi' },
+    { value: 'Jammu and Kashmir', label: 'Jammu and Kashmir' },
+    { value: 'Ladakh', label: 'Ladakh' },
+    { value: 'Lakshadweep', label: 'Lakshadweep' },
+    { value: 'Puducherry', label: 'Puducherry' },
+];
 
 const MentorSignupPage: React.FC = () => {
     const [fields, setFields] = useState({
@@ -9,7 +49,11 @@ const MentorSignupPage: React.FC = () => {
         gender: '',
         email: '',
         phone: '',
-        location: '',
+        addressLine: '',
+        city: '',
+        state: '',
+        pinCode: '',
+        country: 'India',
         organization: '',
         designation: '',
         experience: '',
@@ -25,7 +69,11 @@ const MentorSignupPage: React.FC = () => {
         if (!fields.gender) newErrors.gender = "Gender is required";
         if (!fields.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) newErrors.email = "Invalid email format";
         if (!fields.phone || !/^\d{10}$/.test(fields.phone)) newErrors.phone = "Phone must be 10 digits";
-        if (!fields.location) newErrors.location = "Location is required";
+        if (!fields.addressLine) newErrors.addressLine = "Street/Area is required";
+        if (!fields.city) newErrors.city = "City is required";
+        if (!fields.state) newErrors.state = "State is required";
+        if (!fields.pinCode || !/^\d{6}$/.test(fields.pinCode)) newErrors.pinCode = "PIN code must be 6 digits";
+        if (!fields.country) newErrors.country = "Country is required";
         if (!fields.organization) newErrors.organization = "Organization is required";
         if (!fields.designation) newErrors.designation = "Designation is required";
         if (!fields.experience) newErrors.experience = "Experience is required";
@@ -51,7 +99,21 @@ const MentorSignupPage: React.FC = () => {
             const response = await fetch(API_BASE_URL + '/api/mentor/auth/signup', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(fields),
+                body: JSON.stringify({
+                    name: fields.name,
+                    age: fields.age,
+                    gender: fields.gender,
+                    email: fields.email,
+                    phone: fields.phone,
+                    addressLine: fields.addressLine,
+                    city: fields.city,
+                    state: fields.state,
+                    pinCode: fields.pinCode,
+                    country: fields.country,
+                    organization: fields.organization,
+                    designation: fields.designation,
+                    experience: fields.experience,
+                }),
             });
 
             const data = await response.json();
@@ -147,16 +209,70 @@ const MentorSignupPage: React.FC = () => {
                         </div>
                     </div>
 
-                    <div>
-                        <label className="block text-sm font-semibold text-text-main mb-1.5 ml-1">Location</label>
-                        <input
-                            name="location"
-                            value={fields.location}
-                            onChange={handleChange}
-                            placeholder="City, State"
-                            className="w-full p-3.5 border-2 border-gray-200 bg-white rounded-xl text-base text-text-main font-body transition-all shadow-[0_4px_10px_rgba(0,0,0,0.03)] focus:outline-none focus:border-primary-light focus:ring-4 focus:ring-primary/10"
-                        />
-                        {errors.location && <p className="text-danger text-xs mt-1 ml-1 font-medium">{errors.location}</p>}
+                    {/* Address Section */}
+                    <div className="border-t-2 border-gray-100 pt-4 mt-2">
+                        <h3 className="text-sm font-bold text-text-main mb-3 ml-1 tracking-wide">Address Details</h3>
+                        <div className="space-y-4">
+                            <div>
+                                <label className="block text-sm font-semibold text-text-main mb-1.5 ml-1">Street / Area / Locality</label>
+                                <input
+                                    name="addressLine"
+                                    value={fields.addressLine}
+                                    onChange={handleChange}
+                                    placeholder="e.g., Flat 12, abc Street, xyz Nagar"
+                                    className="w-full p-3.5 border-2 border-gray-200 bg-white rounded-xl text-base text-text-main font-body transition-all shadow-[0_4px_10px_rgba(0,0,0,0.03)] focus:outline-none focus:border-primary-light focus:ring-4 focus:ring-primary/10"
+                                />
+                                {errors.addressLine && <p className="text-danger text-xs mt-1 ml-1 font-medium">{errors.addressLine}</p>}
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-semibold text-text-main mb-1.5 ml-1">City</label>
+                                    <input
+                                        name="city"
+                                        value={fields.city}
+                                        onChange={handleChange}
+                                        placeholder="e.g., Mumbai"
+                                        className="w-full p-3.5 border-2 border-gray-200 bg-white rounded-xl text-base text-text-main font-body transition-all shadow-[0_4px_10px_rgba(0,0,0,0.03)] focus:outline-none focus:border-primary-light focus:ring-4 focus:ring-primary/10"
+                                    />
+                                    {errors.city && <p className="text-danger text-xs mt-1 ml-1 font-medium">{errors.city}</p>}
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-semibold text-text-main mb-1.5 ml-1">State</label>
+                                    <SearchableSelect
+                                        options={INDIAN_STATES}
+                                        value={fields.state}
+                                        onChange={(value) => setFields({ ...fields, state: value })}
+                                        placeholder="Select State"
+                                        error={errors.state}
+                                    />
+                                    {errors.state && <p className="text-danger text-xs mt-1 ml-1 font-medium">{errors.state}</p>}
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-semibold text-text-main mb-1.5 ml-1">PIN Code</label>
+                                    <input
+                                        name="pinCode"
+                                        value={fields.pinCode}
+                                        onChange={handleChange}
+                                        placeholder="6-digit code"
+                                        maxLength={6}
+                                        className="w-full p-3.5 border-2 border-gray-200 bg-white rounded-xl text-base text-text-main font-body transition-all shadow-[0_4px_10px_rgba(0,0,0,0.03)] focus:outline-none focus:border-primary-light focus:ring-4 focus:ring-primary/10"
+                                    />
+                                    {errors.pinCode && <p className="text-danger text-xs mt-1 ml-1 font-medium">{errors.pinCode}</p>}
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-semibold text-text-main mb-1.5 ml-1">Country</label>
+                                    <input
+                                        name="country"
+                                        value={fields.country}
+                                        onChange={handleChange}
+                                        disabled
+                                        className="w-full p-3.5 border-2 border-gray-200 bg-gray-100 rounded-xl text-base text-text-main font-body transition-all shadow-[0_4px_10px_rgba(0,0,0,0.03)] focus:outline-none cursor-not-allowed"
+                                    />
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div>

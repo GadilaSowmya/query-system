@@ -26,7 +26,13 @@ public class Mentor {
     private String email;
 
     private String phone;
-    private String location;
+    
+    // ===== ADDRESS DETAILS =====
+    private String addressLine;
+    private String city;
+    private String state;
+    private String pinCode;
+    private String country;
 
     // ===== PROFESSIONAL DETAILS =====
     private String organization;

@@ -39,11 +39,14 @@ public class MentorAuthService {
         mentor.setGender(data.get("gender"));
         mentor.setEmail(data.get("email"));
         mentor.setPhone(data.get("phone"));
-        mentor.setLocation(data.get("location"));
+        mentor.setAddressLine(data.get("addressLine"));
+        mentor.setCity(data.get("city"));
+        mentor.setState(data.get("state"));
+        mentor.setPinCode(data.get("pinCode"));
+        mentor.setCountry(data.get("country"));
         mentor.setOrganization(data.get("organization"));
         mentor.setDesignation(data.get("designation"));
         mentor.setExperience(data.get("experience"));
-
 
         String otp = otpService.generateOtp();
         mentor.setOtp(otp);
