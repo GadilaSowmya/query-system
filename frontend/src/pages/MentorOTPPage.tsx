@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useMentor } from '../context/MentorContext';
 import { API_BASE_URL } from '../config';
 
 const MentorOTPPage: React.FC = () => {
@@ -10,6 +11,7 @@ const MentorOTPPage: React.FC = () => {
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
     const navigate = useNavigate();
     const location = useLocation();
+    const { login: mentorLogin } = useMentor();
 
     const email = location.state?.email;
     const type = location.state?.type || 'login';
@@ -56,11 +58,29 @@ const MentorOTPPage: React.FC = () => {
             });
 
             const data = await response.json();
-            if (data.message && data.message.includes('successful')) {
+            // Check if response indicates success (flexible checking for different response formats)
+            const isSuccess = response.ok || data.success || (data.message && (data.message.includes('successful') || data.message.includes('verified')));
+            
+            if (isSuccess) {
                 if (type === 'login') {
-                    // TODO: Add mentor context/auth
-                    navigate('/mentor/dashboard', { state: { mentorId: data.mentorId } });
+                    // Store mentor auth data and navigate to dashboard
+                    const mentorData = {
+                        mentorId: data.mentorId || data.mentor?.mentorId || '',
+                        name: data.name || data.mentor?.name || '',
+                        age: data.age || data.mentor?.age || 0,
+                        gender: data.gender || data.mentor?.gender || '',
+                        email: email,
+                        phone: data.phone || data.mentor?.phone || '',
+                        location: data.location || data.mentor?.location || '',
+                        organization: data.organization || data.mentor?.organization || '',
+                        designation: data.designation || data.mentor?.designation || '',
+                        experience: data.experience || data.mentor?.experience || 0,
+                    };
+                    const authToken = data.token || data.authToken || '';
+                    mentorLogin(mentorData, authToken);
+                    navigate('/mentor/dashboard');
                 } else {
+                    // After signup verification, go to login page
                     navigate('/mentor/login');
                 }
             } else {

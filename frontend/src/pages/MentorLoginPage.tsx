@@ -38,16 +38,17 @@ const MentorLoginPage: React.FC = () => {
             });
 
             const data = await response.json();
-            if (response.ok && data.message && data.message.includes('OTP sent')) {
+            // Check if response indicates success (flexible checking)
+            const isSuccess = response.ok || data.success || (data.message && (data.message.includes('OTP sent') || data.message.includes('successful')));
+            
+            if (isSuccess) {
                 navigate('/mentor/verify-otp', { state: { email, type: 'login' } });
-            } else if (!response.ok) {
+            } else {
                 if (data.message && (data.message.includes('not found') || data.message.includes('not verified'))) {
-                    setError('Mentor not found. Please sign up first');
+                    setError('Mentor not found or not verified. Please sign up first');
                 } else {
                     setError(data.message || 'Login failed. Please try again');
                 }
-            } else {
-                setError('Login failed. Please try again');
             }
         } catch (err) {
             setError('Connection error. Please check your internet and try again');
