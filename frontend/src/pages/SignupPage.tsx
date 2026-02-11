@@ -1,7 +1,46 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
+import SearchableSelect from '../components/SearchableSelect';
 
+const INDIAN_STATES = [
+    { value: 'Andhra Pradesh', label: 'Andhra Pradesh' },
+    { value: 'Arunachal Pradesh', label: 'Arunachal Pradesh' },
+    { value: 'Assam', label: 'Assam' },
+    { value: 'Bihar', label: 'Bihar' },
+    { value: 'Chhattisgarh', label: 'Chhattisgarh' },
+    { value: 'Goa', label: 'Goa' },
+    { value: 'Gujarat', label: 'Gujarat' },
+    { value: 'Haryana', label: 'Haryana' },
+    { value: 'Himachal Pradesh', label: 'Himachal Pradesh' },
+    { value: 'Jharkhand', label: 'Jharkhand' },
+    { value: 'Karnataka', label: 'Karnataka' },
+    { value: 'Kerala', label: 'Kerala' },
+    { value: 'Madhya Pradesh', label: 'Madhya Pradesh' },
+    { value: 'Maharashtra', label: 'Maharashtra' },
+    { value: 'Manipur', label: 'Manipur' },
+    { value: 'Meghalaya', label: 'Meghalaya' },
+    { value: 'Mizoram', label: 'Mizoram' },
+    { value: 'Nagaland', label: 'Nagaland' },
+    { value: 'Odisha', label: 'Odisha' },
+    { value: 'Punjab', label: 'Punjab' },
+    { value: 'Rajasthan', label: 'Rajasthan' },
+    { value: 'Sikkim', label: 'Sikkim' },
+    { value: 'Tamil Nadu', label: 'Tamil Nadu' },
+    { value: 'Telangana', label: 'Telangana' },
+    { value: 'Tripura', label: 'Tripura' },
+    { value: 'Uttar Pradesh', label: 'Uttar Pradesh' },
+    { value: 'Uttarakhand', label: 'Uttarakhand' },
+    { value: 'West Bengal', label: 'West Bengal' },
+    { value: 'Andaman and Nicobar Islands', label: 'Andaman and Nicobar Islands' },
+    { value: 'Chandigarh', label: 'Chandigarh' },
+    { value: 'Dadra and Nagar Haveli and Daman and Diu', label: 'Dadra and Nagar Haveli and Daman and Diu' },
+    { value: 'Delhi', label: 'Delhi' },
+    { value: 'Jammu and Kashmir', label: 'Jammu and Kashmir' },
+    { value: 'Ladakh', label: 'Ladakh' },
+    { value: 'Lakshadweep', label: 'Lakshadweep' },
+    { value: 'Puducherry', label: 'Puducherry' },
+];
 
 const SignupPage: React.FC = () => {
     const [fields, setFields] = useState({
@@ -190,53 +229,13 @@ const SignupPage: React.FC = () => {
                                 </div>
                                 <div>
                                     <label className="block text-sm border-gray-200 font-semibold text-text-main mb-1.5 ml-1">State</label>
-                                    <div className="relative">
-                                        <select
-                                            name="state"
-                                            value={fields.state}
-                                            onChange={handleChange}
-                                            style={{ backgroundImage: "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e\")", backgroundPosition: 'right 0.75rem center', backgroundRepeat: 'no-repeat', backgroundSize: '1.5em 1.5em' }}
-                                            className="w-full p-3.5 pr-10 border-2 border-gray-200 bg-white rounded-xl text-base text-text-main font-body transition-all shadow-[0_4px_10px_rgba(0,0,0,0.03)] focus:outline-none focus:border-primary-light focus:ring-4 focus:ring-primary/10 hover:border-gray-300 cursor-pointer appearance-none"
-                                        >
-                                            <option value="">Select State</option>
-                                            <option value="Andhra Pradesh">Andhra Pradesh</option>
-                                            <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-                                            <option value="Assam">Assam</option>
-                                            <option value="Bihar">Bihar</option>
-                                            <option value="Chhattisgarh">Chhattisgarh</option>
-                                            <option value="Goa">Goa</option>
-                                            <option value="Gujarat">Gujarat</option>
-                                            <option value="Haryana">Haryana</option>
-                                            <option value="Himachal Pradesh">Himachal Pradesh</option>
-                                            <option value="Jharkhand">Jharkhand</option>
-                                            <option value="Karnataka">Karnataka</option>
-                                            <option value="Kerala">Kerala</option>
-                                            <option value="Madhya Pradesh">Madhya Pradesh</option>
-                                            <option value="Maharashtra">Maharashtra</option>
-                                            <option value="Manipur">Manipur</option>
-                                            <option value="Meghalaya">Meghalaya</option>
-                                            <option value="Mizoram">Mizoram</option>
-                                            <option value="Nagaland">Nagaland</option>
-                                            <option value="Odisha">Odisha</option>
-                                            <option value="Punjab">Punjab</option>
-                                            <option value="Rajasthan">Rajasthan</option>
-                                            <option value="Sikkim">Sikkim</option>
-                                            <option value="Tamil Nadu">Tamil Nadu</option>
-                                            <option value="Telangana">Telangana</option>
-                                            <option value="Tripura">Tripura</option>
-                                            <option value="Uttar Pradesh">Uttar Pradesh</option>
-                                            <option value="Uttarakhand">Uttarakhand</option>
-                                            <option value="West Bengal">West Bengal</option>
-                                            <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
-                                            <option value="Chandigarh">Chandigarh</option>
-                                            <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
-                                            <option value="Delhi">Delhi</option>
-                                            <option value="Jammu and Kashmir">Jammu and Kashmir</option>
-                                            <option value="Ladakh">Ladakh</option>
-                                            <option value="Lakshadweep">Lakshadweep</option>
-                                            <option value="Puducherry">Puducherry</option>
-                                        </select>
-                                    </div>
+                                    <SearchableSelect
+                                        options={INDIAN_STATES}
+                                        value={fields.state}
+                                        onChange={(value) => setFields({ ...fields, state: value })}
+                                        placeholder="Select State"
+                                        error={errors.state}
+                                    />
                                     {errors.state && <p className="text-danger text-xs mt-1 ml-1 font-medium">{errors.state}</p>}
                                 </div>
                             </div>
