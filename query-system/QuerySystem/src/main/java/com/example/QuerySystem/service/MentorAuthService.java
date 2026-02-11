@@ -69,7 +69,6 @@ public class MentorAuthService {
 
         mentorRepo.save(mentor);
     }
-
     // 3️⃣ Login
     public void login(String email) {
 

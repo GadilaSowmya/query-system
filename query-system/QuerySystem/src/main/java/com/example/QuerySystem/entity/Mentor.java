@@ -33,7 +33,7 @@ public class Mentor {
     private String designation;
     private String experience;
 
-    // ===== AUTH DETAILS =====
+    // ===== AUTH DETAILS ====
     private String otp;
     private LocalDateTime otpExpiry;
 
