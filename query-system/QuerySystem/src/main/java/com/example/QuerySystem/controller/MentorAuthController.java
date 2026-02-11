@@ -44,4 +44,9 @@ public class MentorAuthController {
                 "mentorId", mentorId
         ));
     }
+
+    @PostMapping("/profile")
+    public ResponseEntity<?> getMentorProfile(@RequestBody Map<String, String> data) {
+        return ResponseEntity.ok(mentorAuthService.getMentorByEmail(data.get("email")));
+    }
 }

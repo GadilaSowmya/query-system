@@ -63,21 +63,49 @@ const MentorOTPPage: React.FC = () => {
             
             if (isSuccess) {
                 if (type === 'login') {
-                    // Store mentor auth data and navigate to dashboard
-                    const mentorData = {
-                        mentorId: data.mentorId || data.mentor?.mentorId || '',
-                        name: data.name || data.mentor?.name || '',
-                        age: data.age || data.mentor?.age || 0,
-                        gender: data.gender || data.mentor?.gender || '',
-                        email: email,
-                        phone: data.phone || data.mentor?.phone || '',
-                        location: data.location || data.mentor?.location || '',
-                        organization: data.organization || data.mentor?.organization || '',
-                        designation: data.designation || data.mentor?.designation || '',
-                        experience: data.experience || data.mentor?.experience || 0,
-                    };
-                    const authToken = data.token || data.authToken || '';
-                    mentorLogin(mentorData, authToken);
+                    // Fetch complete mentor profile after successful login OTP verification
+                    try {
+                        const profileResponse = await fetch(API_BASE_URL + '/api/mentor/auth/profile', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email }),
+                        });
+                        
+                        const profileData = await profileResponse.json();
+                        
+                        // Extract mentor info from profile response
+                        const mentor = profileData.mentor || profileData;
+                        const mentorData = {
+                            mentorId: mentor.mentorId || mentor.mentor_id || '',
+                            name: mentor.name || '',
+                            age: mentor.age || 0,
+                            gender: mentor.gender || '',
+                            email: email,
+                            phone: mentor.phone || '',
+                            location: mentor.location || '',
+                            organization: mentor.organization || '',
+                            designation: mentor.designation || '',
+                            experience: mentor.experience || 0,
+                        };
+                        const authToken = data.token || data.authToken || '';
+                        mentorLogin(mentorData, authToken);
+                    } catch (profileErr) {
+                        // Fallback if profile fetch fails
+                        const mentorData = {
+                            mentorId: data.mentorId || data.mentor?.mentorId || '',
+                            name: data.name || data.mentor?.name || '',
+                            age: data.age || data.mentor?.age || 0,
+                            gender: data.gender || data.mentor?.gender || '',
+                            email: email,
+                            phone: data.phone || data.mentor?.phone || '',
+                            location: data.location || data.mentor?.location || '',
+                            organization: data.organization || data.mentor?.organization || '',
+                            designation: data.designation || data.mentor?.designation || '',
+                            experience: data.experience || data.mentor?.experience || 0,
+                        };
+                        const authToken = data.token || data.authToken || '';
+                        mentorLogin(mentorData, authToken);
+                    }
                     navigate('/mentor/dashboard');
                 } else {
                     // After signup verification, go to login page

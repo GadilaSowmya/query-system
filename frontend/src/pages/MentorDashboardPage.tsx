@@ -1,21 +1,66 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMentor } from '../context/MentorContext';
+import { API_BASE_URL } from '../config';
 import { LogOut, User, Mail, Phone, MapPin, Briefcase, Award, Clock } from 'lucide-react';
 
 const MentorDashboardPage: React.FC = () => {
-    const { mentor, logout } = useMentor();
+    const { mentor, logout, updateMentor } = useMentor();
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
 
-    if (!mentor) {
-        navigate('/mentor/login');
-        return null;
-    }
+    // Fetch fresh mentor data from backend on component load
+    useEffect(() => {
+        if (!mentor?.email) {
+            navigate('/mentor/login');
+            return;
+        }
+
+        const fetchMentorProfile = async () => {
+            setIsLoading(true);
+            try {
+                // Try to fetch from profile endpoint
+                const response = await fetch(API_BASE_URL + '/api/mentor/auth/profile', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: mentor.email }),
+                });
+
+                if (response.ok) {
+                    const profileData = await response.json();
+                    const mentorObj = profileData.mentor || profileData;
+                    
+                    // Update context with fresh data from backend
+                    updateMentor({
+                        mentorId: mentorObj.mentorId || mentorObj.mentor_id || mentor.mentorId,
+                        name: mentorObj.name || mentor.name,
+                        age: mentorObj.age !== undefined ? mentorObj.age : mentor.age,
+                        gender: mentorObj.gender || mentor.gender,
+                        phone: mentorObj.phone || mentor.phone,
+                        location: mentorObj.location || mentor.location,
+                        organization: mentorObj.organization || mentor.organization,
+                        designation: mentorObj.designation || mentor.designation,
+                        experience: mentorObj.experience !== undefined ? mentorObj.experience : mentor.experience,
+                    });
+                }
+            } catch (err) {
+                console.log('Profile fetch completed with fallback data');
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchMentorProfile();
+    }, []);
 
     const handleLogout = () => {
         logout();
         navigate('/');
     };
+
+    if (!mentor) {
+        return null;
+    }
 
     return (
         <div className="min-h-screen w-full bg-gradient-to-br from-green-50 to-green-100 p-6">

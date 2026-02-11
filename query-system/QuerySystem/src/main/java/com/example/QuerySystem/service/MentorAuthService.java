@@ -104,4 +104,10 @@ public class MentorAuthService {
 
         return mentor.getMentorId();
     }
+
+    // 5️⃣ Get Mentor Profile by Email
+    public Mentor getMentorByEmail(String email) {
+        return mentorRepo.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Mentor not found"));
+    }
 }
