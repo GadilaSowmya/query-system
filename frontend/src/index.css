@@ -47,3 +47,29 @@ h6 {
     width: 100%;
     min-height: 100vh;
 }
+
+/* Custom Select Dropdown Styling */
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+/* Improve option styling */
+select option {
+    padding: 10px 12px;
+    background: white;
+    color: var(--text-main);
+    font-weight: 500;
+}
+
+select option:hover,
+select option:checked {
+    background: linear-gradient(0deg, var(--primary-light) 0%, var(--primary) 100%);
+    background-color: var(--primary);
+    color: white;
+}
