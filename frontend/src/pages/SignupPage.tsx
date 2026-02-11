@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
 import SearchableSelect from '../components/SearchableSelect';
+import TermsAndConditions from '../components/TermsAndConditions';
 
 const INDIAN_STATES = [
     { value: 'Andhra Pradesh', label: 'Andhra Pradesh' },
@@ -59,6 +60,7 @@ const SignupPage: React.FC = () => {
     });
     const [errors, setErrors] = useState<any>({});
     const [isLoading, setIsLoading] = useState(false);
+    const [termsAccepted, setTermsAccepted] = useState(false);
     const navigate = useNavigate();
 
     const validate = () => {
@@ -80,7 +82,7 @@ const SignupPage: React.FC = () => {
 
     const isFormValid = () => {
         const errs = validate();
-        return Object.keys(errs).length === 0;
+        return Object.keys(errs).length === 0 && termsAccepted;
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -88,6 +90,10 @@ const SignupPage: React.FC = () => {
         const valErrors = validate();
         if (Object.keys(valErrors).length > 0) {
             setErrors(valErrors);
+            return;
+        }
+        if (!termsAccepted) {
+            setErrors({ terms: 'You must accept the Terms and Conditions' });
             return;
         }
 
@@ -288,6 +294,13 @@ const SignupPage: React.FC = () => {
                             {errors.email && <p className="text-danger text-xs mt-1 ml-1 font-medium">{errors.email}</p>}
                         </div>
                     </div>
+
+                    <TermsAndConditions
+                        accepted={termsAccepted}
+                        onChange={setTermsAccepted}
+                        error={errors.terms}
+                        userType="student"
+                    />
 
                     <button
                         type="submit"
