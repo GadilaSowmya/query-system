@@ -82,8 +82,11 @@ const OTPPage: React.FC = () => {
                         gender: userData.gender,
                         qualification: userData.qualification,
                         college: userData.college,
-                        place: userData.place,
+                        addressLine: userData.addressLine,
+                        city: userData.city,
                         state: userData.state,
+                        pinCode: userData.pinCode,
+                        country: userData.country,
                         mobile: userData.mobile
                     });
                     navigate('/');

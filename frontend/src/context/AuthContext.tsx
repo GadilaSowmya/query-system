@@ -9,8 +9,11 @@ interface User {
     gender?: string;
     qualification?: string;
     college?: string;
-    place?: string;
+    addressLine?: string;
+    city?: string;
     state?: string;
+    pinCode?: string;
+    country?: string;
     mobile?: string;
 }
 

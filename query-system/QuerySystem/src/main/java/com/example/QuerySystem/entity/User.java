@@ -21,8 +21,14 @@ public class User {
     private String gender;
     private String qualification;
     private String college;
-    private String place;
+    
+    // Detailed address fields
+    private String addressLine;  // Street/Area/Locality
+    private String city;
     private String state;
+    private String pinCode;
+    private String country;      // Default: India
+    
     private String mobile;
 
     @Column(unique = true)

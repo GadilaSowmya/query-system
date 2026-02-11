@@ -47,7 +47,14 @@ const DashboardPage: React.FC = () => {
                     gender: userData.gender,
                     qualification: userData.qualification,
                     college_name: userData.college,
-                    location: userData.place && userData.state ? `${userData.place}, ${userData.state}` : userData.place
+                    address_line: userData.addressLine,
+                    city: userData.city,
+                    state: userData.state,
+                    pin_code: userData.pinCode,
+                    country: userData.country,
+                    location: [userData.addressLine, userData.city, userData.state, userData.pinCode, userData.country]
+                        .filter(Boolean)
+                        .join(', ')
                 });
             }
 

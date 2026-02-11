@@ -10,7 +10,11 @@ const SignupPage: React.FC = () => {
         gender: '',
         qualification: '',
         college_name: '',
-        location: '',
+        address_line: '',
+        city: '',
+        state: '',
+        pin_code: '',
+        country: 'India',
         mobile_number: '',
         email: '',
     });
@@ -25,7 +29,11 @@ const SignupPage: React.FC = () => {
         if (!fields.gender) newErrors.gender = "Gender is required";
         if (!fields.qualification) newErrors.qualification = "Qualification is required";
         if (!fields.college_name) newErrors.college_name = "College name is required";
-        if (!fields.location) newErrors.location = "Location is required";
+        if (!fields.address_line) newErrors.address_line = "Address/Area is required";
+        if (!fields.city) newErrors.city = "City is required";
+        if (!fields.state) newErrors.state = "State is required";
+        if (!fields.pin_code || !/^\d{6}$/.test(fields.pin_code)) newErrors.pin_code = "PIN code must be 6 digits";
+        if (!fields.country) newErrors.country = "Country is required";
         if (!fields.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) newErrors.email = "Invalid email format";
         if (!fields.mobile_number || !/^\d{10}$/.test(fields.mobile_number)) newErrors.mobile_number = "Mobile number must be 10 digits";
         return newErrors;
@@ -56,8 +64,11 @@ const SignupPage: React.FC = () => {
                     gender: fields.gender,
                     qualification: fields.qualification,
                     college: fields.college_name,
-                    place: fields.location.split(',')[0]?.trim() || fields.location,
-                    state: fields.location.split(',')[1]?.trim() || '',
+                    addressLine: fields.address_line,
+                    city: fields.city,
+                    state: fields.state,
+                    pinCode: fields.pin_code,
+                    country: fields.country,
                     mobile: fields.mobile_number,
                     email: fields.email
                 }),
@@ -149,16 +160,110 @@ const SignupPage: React.FC = () => {
                         />
                         {errors.college_name && <p className="text-danger text-xs mt-1 ml-1 font-medium">{errors.college_name}</p>}
                     </div>
-                    <div>
-                        <label className="block text-sm border-gray-200 font-semibold text-text-main mb-1.5 ml-1">Location (Place & State)</label>
-                        <input
-                            name="location"
-                            value={fields.location}
-                            onChange={handleChange}
-                            className="w-full p-3.5 border-2 border-gray-200 bg-white rounded-xl text-base text-text-main font-body transition-all shadow-[0_4px_10px_rgba(0,0,0,0.03)] focus:outline-none focus:border-primary-light focus:ring-4 focus:ring-primary/10"
-                        />
-                        {errors.location && <p className="text-danger text-xs mt-1 ml-1 font-medium">{errors.location}</p>}
+                    
+                    {/* Address Section */}
+                    <div className="border-t-2 border-gray-100 pt-4 mt-2">
+                        <h3 className="text-sm font-bold text-text-main mb-3 ml-1 tracking-wide">Address Details</h3>
+                        <div className="space-y-4">
+                            <div>
+                                <label className="block text-sm border-gray-200 font-semibold text-text-main mb-1.5 ml-1">Street / Area / Locality</label>
+                                <input
+                                    name="address_line"
+                                    value={fields.address_line}
+                                    onChange={handleChange}
+                                    placeholder="e.g., Flat 12, abc Street, xyz Nagar"
+                                    className="w-full p-3.5 border-2 border-gray-200 bg-white rounded-xl text-base text-text-main font-body transition-all shadow-[0_4px_10px_rgba(0,0,0,0.03)] focus:outline-none focus:border-primary-light focus:ring-4 focus:ring-primary/10"
+                                />
+                                {errors.address_line && <p className="text-danger text-xs mt-1 ml-1 font-medium">{errors.address_line}</p>}
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm border-gray-200 font-semibold text-text-main mb-1.5 ml-1">City</label>
+                                    <input
+                                        name="city"
+                                        value={fields.city}
+                                        onChange={handleChange}
+                                        placeholder="e.g., Mumbai"
+                                        className="w-full p-3.5 border-2 border-gray-200 bg-white rounded-xl text-base text-text-main font-body transition-all shadow-[0_4px_10px_rgba(0,0,0,0.03)] focus:outline-none focus:border-primary-light focus:ring-4 focus:ring-primary/10"
+                                    />
+                                    {errors.city && <p className="text-danger text-xs mt-1 ml-1 font-medium">{errors.city}</p>}
+                                </div>
+                                <div>
+                                    <label className="block text-sm border-gray-200 font-semibold text-text-main mb-1.5 ml-1">State</label>
+                                    <select
+                                        name="state"
+                                        value={fields.state}
+                                        onChange={handleChange}
+                                        className="w-full p-3.5 border-2 border-gray-200 bg-white rounded-xl text-base text-text-main font-body transition-all shadow-[0_4px_10px_rgba(0,0,0,0.03)] focus:outline-none focus:border-primary-light focus:ring-4 focus:ring-primary/10 appearance-none"
+                                    >
+                                        <option value="">Select State</option>
+                                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                        <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                        <option value="Assam">Assam</option>
+                                        <option value="Bihar">Bihar</option>
+                                        <option value="Chhattisgarh">Chhattisgarh</option>
+                                        <option value="Goa">Goa</option>
+                                        <option value="Gujarat">Gujarat</option>
+                                        <option value="Haryana">Haryana</option>
+                                        <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                        <option value="Jharkhand">Jharkhand</option>
+                                        <option value="Karnataka">Karnataka</option>
+                                        <option value="Kerala">Kerala</option>
+                                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                        <option value="Maharashtra">Maharashtra</option>
+                                        <option value="Manipur">Manipur</option>
+                                        <option value="Meghalaya">Meghalaya</option>
+                                        <option value="Mizoram">Mizoram</option>
+                                        <option value="Nagaland">Nagaland</option>
+                                        <option value="Odisha">Odisha</option>
+                                        <option value="Punjab">Punjab</option>
+                                        <option value="Rajasthan">Rajasthan</option>
+                                        <option value="Sikkim">Sikkim</option>
+                                        <option value="Tamil Nadu">Tamil Nadu</option>
+                                        <option value="Telangana">Telangana</option>
+                                        <option value="Tripura">Tripura</option>
+                                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                        <option value="Uttarakhand">Uttarakhand</option>
+                                        <option value="West Bengal">West Bengal</option>
+                                        <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                                        <option value="Chandigarh">Chandigarh</option>
+                                        <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+                                        <option value="Delhi">Delhi</option>
+                                        <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                                        <option value="Ladakh">Ladakh</option>
+                                        <option value="Lakshadweep">Lakshadweep</option>
+                                        <option value="Puducherry">Puducherry</option>
+                                    </select>
+                                    {errors.state && <p className="text-danger text-xs mt-1 ml-1 font-medium">{errors.state}</p>}
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm border-gray-200 font-semibold text-text-main mb-1.5 ml-1">PIN Code</label>
+                                    <input
+                                        name="pin_code"
+                                        value={fields.pin_code}
+                                        onChange={handleChange}
+                                        placeholder="6-digit code"
+                                        maxLength={6}
+                                        className="w-full p-3.5 border-2 border-gray-200 bg-white rounded-xl text-base text-text-main font-body transition-all shadow-[0_4px_10px_rgba(0,0,0,0.03)] focus:outline-none focus:border-primary-light focus:ring-4 focus:ring-primary/10"
+                                    />
+                                    {errors.pin_code && <p className="text-danger text-xs mt-1 ml-1 font-medium">{errors.pin_code}</p>}
+                                </div>
+                                <div>
+                                    <label className="block text-sm border-gray-200 font-semibold text-text-main mb-1.5 ml-1">Country</label>
+                                    <input
+                                        name="country"
+                                        value={fields.country}
+                                        onChange={handleChange}
+                                        className="w-full p-3.5 border-2 border-gray-200 bg-white rounded-xl text-base text-text-main font-body transition-all shadow-[0_4px_10px_rgba(0,0,0,0.03)] focus:outline-none focus:border-primary-light focus:ring-4 focus:ring-primary/10"
+                                    />
+                                    {errors.country && <p className="text-danger text-xs mt-1 ml-1 font-medium">{errors.country}</p>}
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm border-gray-200 font-semibold text-text-main mb-1.5 ml-1">Mobile Number</label>

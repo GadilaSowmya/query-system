@@ -37,8 +37,11 @@ public class AuthService {
         user.setGender(data.get("gender"));
         user.setQualification(data.get("qualification"));
         user.setCollege(data.get("college"));
-        user.setPlace(data.get("place"));
+        user.setAddressLine(data.get("addressLine"));
+        user.setCity(data.get("city"));
         user.setState(data.get("state"));
+        user.setPinCode(data.get("pinCode"));
+        user.setCountry(data.get("country"));
         user.setMobile(data.get("mobile"));
         user.setEmail(email);
         user.setCreatedAt(LocalDateTime.now());
