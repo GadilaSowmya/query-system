@@ -43,6 +43,5 @@ public class MentorAuthController {
                 "message", "Login successful",
                 "mentorId", mentorId
         ));
-
     }
 }
