@@ -8,11 +8,11 @@ interface TermsAndConditionsProps {
     userType?: 'student' | 'mentor';
 }
 
-const TermsAndConditions: React.FC<TermsAndConditionsProps> = ({ 
-    accepted, 
-    onChange, 
+const TermsAndConditions: React.FC<TermsAndConditionsProps> = ({
+    accepted,
+    onChange,
     error,
-    userType = 'student' 
+    userType = 'student'
 }) => {
     const [expanded, setExpanded] = useState(false);
 
