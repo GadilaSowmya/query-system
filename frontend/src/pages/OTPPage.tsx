@@ -89,7 +89,7 @@ const OTPPage: React.FC = () => {
                         country: userData.country,
                         mobile: userData.mobile
                     });
-                    navigate('/');
+                    navigate('/dashboard');
                 } else {
                     navigate('/login');
                 }
